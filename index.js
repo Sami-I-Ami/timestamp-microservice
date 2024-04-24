@@ -25,16 +25,23 @@ app.get("/api/hello", function (req, res) {
 });
 
 // :date? endpoint
-app.get("/api/:date", function (req, res) {
-  // make sure it parses
-  givenDate = new Date(req.params.date);
-  if (givenDate == "Invalid Date") {
-    return res.json({error: "Invalid Date"})
+app.get("/api/:date?", function (req, res) {
+  // first check if it is empty
+  if (!req.params.date) {
+    // use current time if it is
+    givenDate = new Date();
+  } else {
+    // otherwise make sure it parses
+    givenDate = new Date(req.params.date);
+    if (givenDate == "Invalid Date") {
+      // return error if not
+      return res.json({error: "Invalid Date"});
+    }
   }
-
+  
   // return json
   res.json({
-    unix: "Placeholder"
+    utc: givenDate.toString()
   });
 });
 
