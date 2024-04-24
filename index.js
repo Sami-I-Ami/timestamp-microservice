@@ -24,7 +24,19 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+// :date? endpoint
+app.get("/api/:date", function (req, res) {
+  // make sure it parses
+  givenDate = new Date(req.params.date);
+  if (givenDate == "Invalid Date") {
+    return res.json({error: "Invalid Date"})
+  }
 
+  // return json
+  res.json({
+    unix: "Placeholder"
+  });
+});
 
 // Listen on port set in environment variable or default to 3000
 var listener = app.listen(process.env.PORT || 3000, function () {
