@@ -32,16 +32,33 @@ app.get("/api/:date?", function (req, res) {
     givenDate = new Date();
   } else {
     // otherwise make sure it parses
-    givenDate = new Date(req.params.date);
+    given = req.params.date
+    if (parseInt(given)){
+      given = parseInt(given);
+    }
+    givenDate = new Date(given);
     if (givenDate == "Invalid Date") {
       // return error if not
       return res.json({error: "Invalid Date"});
     }
   }
+
+  // format date (utc)
+  splittedDate = givenDate.toString().split(" ");
+  splittedDate[0] += ',';
+  placeholder = splittedDate[1];
+  splittedDate[1] = splittedDate[2];
+  splittedDate[2] = placeholder;
+  placeholder = splittedDate[5].split("+");
+  splittedDate[5] = placeholder[0];
+  formattedDate = splittedDate.slice(0,6).join(" ");
+  
+
   
   // return json
   res.json({
-    utc: givenDate.toString()
+    unix: givenDate.getTime(),
+    utc: formattedDate
   });
 });
 
