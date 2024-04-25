@@ -32,14 +32,14 @@ app.get("/api/:date?", function (req, res) {
     givenDate = new Date();
   } else {
     // otherwise make sure it parses
-    given = req.params.date
-    if (parseInt(given)){
-      given = parseInt(given);
-    }
-    givenDate = new Date(given);
+    givenDate = new Date(req.params.date);
     if (givenDate == "Invalid Date") {
-      // return error if not
-      return res.json({error: "Invalid Date"});
+      // try as int
+      givenDate = new Date(parseInt(req.params.date))
+      if (givenDate == "Invalid Date") {
+        // return error if not
+        return res.json({error: "Invalid Date"});
+      }
     }
   }
 
